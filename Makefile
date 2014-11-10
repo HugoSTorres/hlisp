@@ -14,7 +14,7 @@ CFLAGS=-I$(INCLUDEDIR)
 
 # default is the target that runs when a target isn't explicitly named
 default:
-	$(CC) $(CFLAGS) $(SOURCES)
+	$(CC) $(CFLAGS) $(SOURCES) -o hlisp
 
 # phony prevents make from checking for files named clean
 .PHONY: clean
