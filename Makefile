@@ -19,4 +19,4 @@ default:
 # phony prevents make from checking for files named clean
 .PHONY: clean
 clean:
-	rm a.out
+	rm hlisp
