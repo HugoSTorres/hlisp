@@ -14,14 +14,13 @@ CFLAGS=-I$(INCLUDEDIR)
 CFLAGSDEBUG=$(CFLAGS) -DDEBUG
 
 # default is the target that runs when a target isn't explicitly named
-default:
-	$(CC) $(CFLAGS) $(SOURCES) -o hlisp
-
-debug:
-	$(CC) $(CFLAGSDEBUG) $(SOURCES) -o hlisp-debug
+hlisp:
+	$(CC) $(CFLAGS) $(SOURCES) -o $@
+hlisp-debug:
+	$(CC) $(CFLAGSDEBUG) $(SOURCES) -o $@
 
 # phony prevents make from checking for files named clean
-.PHONY: clean dclean
+.PHONY: clean clean-debug
 clean: hlisp
 	rm hlisp
 
