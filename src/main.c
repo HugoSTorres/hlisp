@@ -1,3 +1,7 @@
+/*
+ * main.c - program's entry point
+ */
+
 #include "io.h"
 
 int main(int argc, char* argv[])
