@@ -30,6 +30,7 @@ int readf(char *filename)
 
 	int flen, rlen;
 
+	// open the file, with some error checking
 	if ((fp = fopen(filename, "r")) == NULL) {
 		fprintf(stderr, "error: %s\n", strerror(errno));
 		return errno;
@@ -39,16 +40,19 @@ int readf(char *filename)
 #endif
 	}
 
+	// little trick to get the length of a stream
 	fseek(fp, 0, SEEK_END);
 	flen = ftell(fp);
 	rewind(fp);
 	text = (char *) malloc(flen + 1);
 
+	// read the file with some error checking
 	if ((rlen = fread(text, sizeof(char), flen, fp)) != flen) {
 		fprintf(stderr, "error: %s\n", strerror(errno));
 		return errno;
 	}
 
+	// append with null byte and close the stream
 	text[flen] = '\0';
 #ifdef DEBUG
 	printf("text: %s\n", text);
