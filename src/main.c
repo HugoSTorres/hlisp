@@ -29,5 +29,7 @@ int main(int argc, char* argv[])
 	if (_infile)
 		readf(infilename);
 
+	atom(text);
+
 	return 0;
 }
