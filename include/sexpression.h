@@ -20,6 +20,10 @@
 
 #include <ctype.h>
 
+#define TRUE  'T'
+#define FALSE 'F'
+#define NIL   'nil'
+
 int number(char *);
 int alpha(char *);
 int atom(char *);
