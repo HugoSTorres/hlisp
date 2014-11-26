@@ -30,6 +30,7 @@ int main(int argc, char* argv[])
 		readf(infilename);
 
 	atom(text);
+	number("-1235");
 
 	return 0;
 }

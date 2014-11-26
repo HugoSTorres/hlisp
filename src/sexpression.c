@@ -1,4 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
 
 #include "sexpression.h"
 
@@ -7,17 +10,23 @@
  */
 int number(char *code)
 {
+#ifdef DEBUG
+	printf("call: number\n");
+#endif
+	long ret;
+       
 	/*
-	 * Determine the sign of the number.
-	 * If there's no sign, the number is positive.
-	 * The grammar doesn't define floating point numbers.
+	 * Convert the number from char* input to an actual integer type.
+	 * Handle signs as well.
 	 */
-
-	 /*
-	  * Convert the number from char* input to an actual integer type.
-	  */
-
-	return 0;
+	if ((ret = strtol(&code[0], NULL, 0)) == 0) {
+		fprintf(stderr, "error: %s\n", strerror(errno));
+		return errno;
+	}
+#ifdef DEBUG
+	printf("number parsed: %li\n", ret);
+#endif
+	return ret;
 }
 
 /*
