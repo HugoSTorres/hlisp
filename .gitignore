@@ -2,4 +2,5 @@ test.txt
 .tags*
 *.swp
 .bundle
+vendor
 
