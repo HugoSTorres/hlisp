@@ -1,15 +1,15 @@
 class Atom
   attr_reader :value
 
-  def initialize(terminal)
-    @value = terminal
+  def initialize(nonterminal)
+    @value = nonterminal
   end
 
   def self.evaluate(code)
-    unless (terminal = Number.evaluate code)
-      terminal = Alpha.evaluate code
+    unless (nonterminal = Number.evaluate code)
+      nonterminal = Alpha.evaluate code
     end
 
-    Atom.new terminal
+    Atom.new nonterminal
   end
 end

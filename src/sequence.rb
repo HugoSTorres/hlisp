@@ -5,36 +5,31 @@ class Sequence
     @value = code
   end
 
+  def tokenize
+    Sequence.new @value.sub(/\(/, " ( ").sub(/\)/, " ) ").split
+  end
 
-  def self.evaluate(code)
-    #return false unless check_parenthesis_in code
+  def parse
+    parens = 0
+    ret = []
 
-    # Arrays have stack methods, so we can use one as a stack by just sticking
-    # to the stack methods.
-    exec_stack = []
-    roffset = 0
-    length = code.length
-
-    # Evaluating a sequence involves taking a chunk of code between
-    # parenthesis and pushing it onto the stack. SExpression will take the
-    # stack and pop each element off, evaluating it one at a time.
-    code.each_char.with_index do |c, i|
-      if c == '('
-        code.reverse.each_char.with_index(roffset) do |d, j|
-          if d == ')'
-            roffset = j
-          end
-        end
-
-        # push a new sequence onto the stack, trimmed of parenthesis
-        exec_stack << Sequence.new(code[i, length - roffset])
+    @value.each do |token|
+      case token
+      when "("
+        parens += 1
+        ret << token
+      when ")"
+        parens -= 1
+        ret << token
+      else
+        ret << Atom.evaluate(token).value
       end
     end
 
-    return exec_stack
+    ret
   end
 
-  private 
+  private
 
     # check sequence's parenthetical validity
     def check_parenthesis_in(code)
