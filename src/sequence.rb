@@ -15,7 +15,7 @@ class Sequence
       when "(", ")"
         ret << token
       else
-        ret << Atom.evaluate(token).value
+        ret << Atom.new(token).value
       end
     end
 
@@ -43,10 +43,12 @@ class Sequence
   private
 
     # check sequence's parenthetical validity
-    def check_parenthesis_in(code)
-      paren_count = 0
+    def missing_parenthesis_in(code)
+      return true unless code[0] == '(' && code[code.length - 1] == ')'
+    end
 
-      return false unless code[0] == '(' && code[code.length - 1] == ')'
+    def balanced_parenthesis
+      paren_count = 0
 
       code.each_char do |c|
         paren_count = paren_count + 1 if c == '('
@@ -54,9 +56,5 @@ class Sequence
       end
 
       paren_count == 0 ? true : false
-    end
-
-    def _set_execution_order(tokens, ret = nil)
-
     end
 end
