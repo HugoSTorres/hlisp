@@ -1,3 +1,5 @@
+require 'pry'
+
 class Sequence
   attr_reader :value
 
@@ -6,27 +8,36 @@ class Sequence
   end
 
   def tokenize
-    Sequence.new @value.sub(/\(/, " ( ").sub(/\)/, " ) ").split
-  end
-
-  def parse
-    parens = 0
     ret = []
 
-    @value.each do |token|
+    @value.gsub(/\(/, " ( ").gsub(/\)/, " ) ").split.each do |token|
       case token
-      when "("
-        parens += 1
-        ret << token
-      when ")"
-        parens -= 1
+      when "(", ")"
         ret << token
       else
         ret << Atom.evaluate(token).value
       end
     end
 
-    ret
+    Sequence.new ret
+  end
+
+  def set_execution_order
+    _set_execution_order = lambda do |tokens, ret = []|
+      token = tokens.delete_at 0
+
+      case token
+      when "("
+        ret << _set_execution_order[tokens, []]
+      when ")"
+        ret
+      else
+        ret << token
+        return _set_execution_order[tokens, ret]
+      end
+    end
+
+    _set_execution_order[@value]
   end
 
   private
@@ -43,5 +54,9 @@ class Sequence
       end
 
       paren_count == 0 ? true : false
+    end
+
+    def _set_execution_order(tokens, ret = nil)
+
     end
 end
