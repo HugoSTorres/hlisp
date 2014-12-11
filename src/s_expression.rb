@@ -3,7 +3,7 @@ class SExpression
 
   def self.evaluate
     unless (@value = Atom.evaluate code)
-      @value = Sequence.evaluate code
+      @value = Sequence.new(code).tokenize.set_execution_order
     end
   end
 end
