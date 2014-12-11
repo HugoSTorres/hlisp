@@ -28,16 +28,16 @@ class Sequence
 
       case token
       when "("
-        ret << _set_execution_order[tokens, []]
+        ret << _set_execution_order[tokens]
       when ")"
         ret
       else
         ret << token
-        return _set_execution_order[tokens, ret]
+        _set_execution_order[tokens, ret]
       end
     end
 
-    _set_execution_order[@value]
+    Sequence.new _set_execution_order[@value]
   end
 
   private
