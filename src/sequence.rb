@@ -1,4 +1,5 @@
 require 'pry'
+require_relative 'exec_tree'
 
 class Sequence
   attr_reader :value
@@ -23,22 +24,46 @@ class Sequence
   end
 
   def set_execution_order
-    _set_execution_order = lambda do |tokens, ret = []|
-      token = tokens.delete_at 0
+    _set_execution_order = lambda do |tokens, node|
+      token = tokens.shift
 
       case token
+      when nil
+        return node
       when "("
-        ret << _set_execution_order[tokens]
+        child = Node.new
+        node.add_child(child)
+        _set_execution_order[tokens, child]
       when ")"
-        ret
+        _set_execution_order[tokens, node.parent]
       else
-        ret << token
-        _set_execution_order[tokens, ret]
+        node.add_value(token)
+        return _set_execution_order[tokens, node]
       end
     end
 
-    Sequence.new _set_execution_order[@value]
+    root = Node.new
+    _set_execution_order[@value, root]
+    Sequence.new root.to_a
   end
+
+  # def set_execution_order
+  #   _set_execution_order = lambda do |tokens, ret = []|
+  #     token = tokens.delete_at 0
+
+  #     case token
+  #     when "("
+  #       ret << _set_execution_order[tokens]
+  #     when ")"
+  #       ret
+  #     else
+  #       ret << token
+  #       _set_execution_order[tokens, ret]
+  #     end
+  #   end
+
+  #   Sequence.new _set_execution_order[@value]
+  # end
 
   private
 
