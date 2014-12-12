@@ -1,3 +1,5 @@
+require 'pry'
+
 class Atom
   attr_reader :value
 
@@ -8,7 +10,12 @@ class Atom
     when "T"
       true
     else
-      Alpha.evaluate code unless Number.evaluate code
+      ret = Alpha.evaluate code
+      if ret == false
+        Number.evaluate code
+      else
+        ret
+      end
     end
   end
 end
