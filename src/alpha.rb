@@ -5,6 +5,7 @@ class Alpha
     @value = code
   end
 
+  # Pattern match an alphanumeric by using a regular expression.
   def self.evaluate(code)
     /^\w*[a-zA-Z]\w+$/ === code ? Alpha.new(code) : false
   end

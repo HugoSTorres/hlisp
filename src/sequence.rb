@@ -1,6 +1,6 @@
-require 'pry'
 require_relative 'exec_tree'
 
+# Class representing a sequence.
 class Sequence
   attr_reader :value
 
@@ -8,6 +8,8 @@ class Sequence
     @value = code
   end
 
+  # Separate each token in the sequence.
+  # Returns a tokenized version of the sequence.
   def tokenize
     ret = []
 
@@ -16,13 +18,16 @@ class Sequence
       when "(", ")"
         ret << token
       else
-        ret << Atom.new(token).value
+        ret << Atom.new(token)
       end
     end
 
     Sequence.new ret
   end
 
+  # Create a nested array representing the tokens in the order they are to be
+  # executed.
+  # Returns a nested version of the sequence.
   def set_execution_order
     _set_execution_order = lambda do |tokens, node|
       token = tokens.shift
@@ -44,34 +49,17 @@ class Sequence
 
     root = Node.new
     _set_execution_order[@value, root]
-    Sequence.new root.to_a
+    Sequence.new root.to_a[0]
   end
-
-  # def set_execution_order
-  #   _set_execution_order = lambda do |tokens, ret = []|
-  #     token = tokens.delete_at 0
-
-  #     case token
-  #     when "("
-  #       ret << _set_execution_order[tokens]
-  #     when ")"
-  #       ret
-  #     else
-  #       ret << token
-  #       _set_execution_order[tokens, ret]
-  #     end
-  #   end
-
-  #   Sequence.new _set_execution_order[@value]
-  # end
 
   private
 
-    # check sequence's parenthetical validity
     def missing_parenthesis_in(code)
       return true unless code[0] == '(' && code[code.length - 1] == ')'
     end
 
+    # This is its own method because it has no way of knowing whether or not
+    # the sequence starts and ends with parenthesis.
     def balanced_parenthesis
       paren_count = 0
 

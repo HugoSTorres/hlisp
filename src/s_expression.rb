@@ -1,6 +1,9 @@
+# Class representing an s-expression.
 class SExpression
   attr_reader :value
 
+  # Since an s-expression can only be an atom or a sequence, we initialize it as
+  # either an Atom or a Sequence.
   def initialize(code)
   	val = Atom.new code
 
@@ -11,4 +14,3 @@ class SExpression
   	end
   end
 end
-
